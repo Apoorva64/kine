@@ -35,6 +35,7 @@ const (
 	NATSBackend      = "nats"
 	MySQLBackend     = "mysql"
 	PostgresBackend  = "postgres"
+	RedisBackend     = "redis"
 )
 
 type Config struct {
@@ -251,6 +252,10 @@ func getKineStorageBackend(ctx context.Context, driver, dsn string, cfg Config) 
 		backend, err = nats.NewLegacy(ctx, dsn, cfg.BackendTLSConfig)
 	case NATSBackend:
 		backend, err = nats.New(ctx, dsn, cfg.BackendTLSConfig)
+	case RedisBackend:
+		// not implemented
+		backend, err = nil, fmt.Errorf("storage backend not implemented")
+
 	default:
 		return false, nil, fmt.Errorf("storage backend is not defined")
 	}
