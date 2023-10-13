@@ -3,6 +3,7 @@ package endpoint
 import (
 	"context"
 	"fmt"
+	"github.com/k3s-io/kine/pkg/drivers/redis"
 	"net"
 	"os"
 	"strings"
@@ -253,8 +254,7 @@ func getKineStorageBackend(ctx context.Context, driver, dsn string, cfg Config) 
 	case NATSBackend:
 		backend, err = nats.New(ctx, dsn, cfg.BackendTLSConfig)
 	case RedisBackend:
-		// not implemented
-		backend, err = nil, fmt.Errorf("storage backend not implemented")
+		backend, err = redis.New(ctx, dsn, cfg.BackendTLSConfig)
 
 	default:
 		return false, nil, fmt.Errorf("storage backend is not defined")
